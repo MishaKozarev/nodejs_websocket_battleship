@@ -9,7 +9,7 @@
     "strict": true,
 
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "index.ts"],
   "exclude": [
     "node_modules",
      "front",
