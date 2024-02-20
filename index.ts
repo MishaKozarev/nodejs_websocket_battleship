@@ -1,6 +1,6 @@
 import { httpServer } from './src/http_server/index';
 import dotenv from 'dotenv';
-import './src/websocket_server/server';
+import './src/websocket_server/server/server';
 
 export const HTTP_PORT = parseInt(process.env.PORT || '8181');
 
