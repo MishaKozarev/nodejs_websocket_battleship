@@ -1,5 +1,10 @@
-import { Room, User } from '../model/types';
+import { ExtendWebSocket, Room, User, UserWinner } from '../model/types';
 
 export const users: User[] = [];
 
-export const roomUsers: Room[] = [];
+export let connections: ExtendWebSocket[] = [];
+
+export const userWinners: UserWinner[] = [];
+
+export let roomUsers: Room[] = [];
+

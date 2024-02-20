@@ -24,6 +24,7 @@ export function registerUser(ws: ExtendWebSocket, request: RequestByUser) {
       }),
       id: 0,
     };
+
     ws.send(JSON.stringify(response));
   }
 }

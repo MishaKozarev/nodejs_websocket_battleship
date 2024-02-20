@@ -18,11 +18,20 @@ export interface Room {
   roomUsers: RoomUsers[];
 }
 
-interface RoomUsers {
+export interface RoomUsers {
   name: string;
   index: string;
 }
 
 export interface ExtendWebSocket extends WebSocket {
   id: string;
+}
+
+export type IndexRoom = {
+  indexRoom: string;
+};
+
+export type UserWinner = {
+  name: string;
+  wins: number;
 }
