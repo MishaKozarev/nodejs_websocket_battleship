@@ -6,7 +6,7 @@ export function checkedUserExistence(name: string) {
   return users.some((user) => user.name === name);
 }
 
-export function registerUser(name: string, password?: string) {
+export function registerUser(name: string, password: string) {
   if (checkedUserExistence(name)) {
     return { index: -1, error: true, errorText: 'Player already exists' };
   }

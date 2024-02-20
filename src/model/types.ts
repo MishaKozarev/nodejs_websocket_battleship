@@ -1,10 +1,11 @@
 export interface User {
   name: string;
-  password?: string;
+  password: string;
   wins: number;
 }
 
 export interface RequestByUser {
   type: string;
-  data: User;
+  data: string;
+  id: number
 }

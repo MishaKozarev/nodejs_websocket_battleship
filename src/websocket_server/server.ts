@@ -1,6 +1,6 @@
 import { WebSocket } from 'ws';
 import { registerUser } from '../db/db';
-import { RequestByUser } from '../model/types';
+import { RequestByUser, User } from '../model/types';
 
 export const wss = new WebSocket.Server({port: 3000});
 
@@ -22,11 +22,12 @@ function handleRequest(ws: WebSocket, request: RequestByUser) {
   switch (request.type) {
   case 'reg':
     handleRegistration(ws, request);
+    break;
   }
 }
 
 function handleRegistration(ws: WebSocket, request: RequestByUser) {
-  const { name, password } = request.data;
+  const { name, password }: User = JSON.parse(request.data);
 
   const { index, error, errorText } = registerUser(name, password);
 
