@@ -1,5 +1,5 @@
-import { addUsersToRoom } from '../db/db';
 import { ExtendWebSocket, RequestByUser } from '../model/types';
+import { addUsersToRoom } from './addUserToRoom';
 import { createRoom } from './createRoom';
 import { registerUser } from './registerUser';
 import { updateRoom } from './updateRoom';
