@@ -1,3 +1,4 @@
+import { addUsersToRoom } from '../db/db';
 import { ExtendWebSocket, RequestByUser } from '../model/types';
 import { createRoom } from './createRoom';
 import { registerUser } from './registerUser';
@@ -8,12 +9,14 @@ export function handleRequest(ws: ExtendWebSocket, request: RequestByUser) {
   switch (request.type) {
   case 'reg':
     registerUser(ws, request);
-    updateRoom(ws);
-    updateWinners(ws);
+    updateRoom();
+    updateWinners();
     break;
   case 'create_room':
     createRoom(ws);
-    updateRoom(ws);
+    break;
+  case 'add_user_to_room':
+    addUsersToRoom(ws, request);
     break;
   }
 }

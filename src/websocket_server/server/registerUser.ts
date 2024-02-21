@@ -1,4 +1,4 @@
-import { users } from '../db/db';
+import { connections, users } from '../db/db';
 import { ExtendWebSocket, RequestByUser, User } from '../model/types';
 import { checkedUserExistence } from '../utils/isUserExist';
 
@@ -14,6 +14,8 @@ export function registerUser(ws: ExtendWebSocket, request: RequestByUser) {
     };
     users.push(newUser);
 
+    connections.push(ws);
+
     const response = {
       type: 'reg',
       data: JSON.stringify({
@@ -24,7 +26,6 @@ export function registerUser(ws: ExtendWebSocket, request: RequestByUser) {
       }),
       id: 0,
     };
-
     ws.send(JSON.stringify(response));
   }
 }

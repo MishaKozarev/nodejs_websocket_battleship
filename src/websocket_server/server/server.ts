@@ -2,15 +2,13 @@ import { WebSocket } from 'ws';
 import { ExtendWebSocket } from '../model/types';
 import { randomUUID } from 'crypto';
 import { handleRequest } from './request';
-import { connections } from '../db/db';
 
 export const wss = new WebSocket.Server({port: 3000});
 
 wss.on('connection', (ws: ExtendWebSocket) => {
-  console.log('A client connected!');
   const id = randomUUID();
   ws.id = id;
-  connections.push(ws);
+  console.log(`Connected client ID: ${ws.id}!`);
 
   ws.on('message', (message: string) => {
     const request = JSON.parse(message);
@@ -18,6 +16,6 @@ wss.on('connection', (ws: ExtendWebSocket) => {
   });
 
   ws.on('close', () => {
-    console.log('A client disconnected');
+    console.log(`Disconnected client ID${ws.id}!`);
   });
 });

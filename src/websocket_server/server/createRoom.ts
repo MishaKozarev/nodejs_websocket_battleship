@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { roomUsers, users } from '../db/db';
 import { ExtendWebSocket, Room, User } from '../model/types';
+import { updateRoom } from './updateRoom';
 
 export function createRoom(ws: ExtendWebSocket) {
 
@@ -18,4 +19,5 @@ export function createRoom(ws: ExtendWebSocket) {
     ],
   };
   roomUsers.push(newRoom);
+  updateRoom();
 }
