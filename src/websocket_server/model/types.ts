@@ -15,10 +15,10 @@ export interface RequestByUser {
 
 export interface Room {
   roomId: string;
-  roomUsers: RoomUsers[];
+  roomUsers: UsersInRoom[];
 }
 
-export interface RoomUsers {
+export interface UsersInRoom {
   name: string;
   index: string;
 }

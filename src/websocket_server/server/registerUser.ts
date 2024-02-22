@@ -20,7 +20,7 @@ export function registerUser(ws: ExtendWebSocket, request: RequestByUser) {
       type: 'reg',
       data: JSON.stringify({
         name,
-        index: users.indexOf(newUser),
+        index: ws.id,
         error: false,
         errorText: '',
       }),

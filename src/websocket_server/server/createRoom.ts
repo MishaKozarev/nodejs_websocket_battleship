@@ -1,16 +1,14 @@
-import { randomUUID } from 'crypto';
-import { roomUsers, users } from '../db/db';
+import { rooms, users } from '../db/db';
 import { ExtendWebSocket, Room, User } from '../model/types';
 import { updateRoom } from './updateRoom';
 
 export function createRoom(ws: ExtendWebSocket) {
-
-  const roomId = randomUUID();
+  if (rooms.find((room) => room.roomId === ws.id)) return;
 
   const creatorRoom = users.find((user) => user.index === ws.id) as User;
 
   const newRoom: Room = {
-    roomId,
+    roomId: creatorRoom.index,
     roomUsers: [
       {
         name: creatorRoom.name,
@@ -18,6 +16,6 @@ export function createRoom(ws: ExtendWebSocket) {
       },
     ],
   };
-  roomUsers.push(newRoom);
+  rooms.push(newRoom);
   updateRoom();
 }

@@ -1,14 +1,14 @@
-import { connections, removeRoomUser, roomUsers } from '../db/db';
+import { connections, removeRoom, rooms } from '../db/db';
 import { ExtendWebSocket, IndexRoom, RequestByUser, Room, User } from '../model/types';
 
-export const createGame = (ws: ExtendWebSocket, request: RequestByUser) => {
+export const createGame = (request: RequestByUser) => {
   const requestIndexRoom = JSON.parse(request.data) as IndexRoom;
-  const currentRoom = roomUsers.find(
+  const currentRoom = rooms.find(
     (room) => room.roomId === requestIndexRoom.indexRoom,
   ) as Room;
 
   const userFirst = currentRoom.roomUsers.find(
-    (user) => user.index === ws.id,
+    (user) => user.index === requestIndexRoom.indexRoom,
   ) as User;
 
   const userSecond = currentRoom.roomUsers.filter(
@@ -48,5 +48,5 @@ export const createGame = (ws: ExtendWebSocket, request: RequestByUser) => {
   connectionFirst.send(JSON.stringify(responseFirst));
   connectionSecond.send(JSON.stringify(responseSecond));
 
-  removeRoomUser(currentRoom.roomId);
+  removeRoom(currentRoom.roomId);
 };

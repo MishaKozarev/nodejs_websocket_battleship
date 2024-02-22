@@ -1,4 +1,4 @@
-import { removeRoomUser, roomUsers, users } from '../db/db';
+import { removeRoom, rooms, users } from '../db/db';
 import { ExtendWebSocket, IndexRoom, RequestByUser, Room, User } from '../model/types';
 import { createGame } from './createGame';
 import { updateRoom } from './updateRoom';
@@ -13,15 +13,15 @@ export const addUsersToRoom = (ws: ExtendWebSocket, request: RequestByUser) => {
     (user) => user.index === ws.id,
   ) as User;
 
-  const roomToAddUser = roomUsers.find(
+  const roomToAddUser = rooms.find(
     (room) => room.roomId === roomIndex.indexRoom,
   ) as Room;
 
-  if (roomUsers.find((room) => room.roomId === userToRoom.index)) {
-    removeRoomUser(userToRoom.index);
+  if (rooms.find((room) => room.roomId === userToRoom.index)) {
+    removeRoom(userToRoom.index);
 
   }
   roomToAddUser.roomUsers.push(userToRoom);
   updateRoom();
-  createGame(ws, request);
+  createGame(request);
 };
