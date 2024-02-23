@@ -1,4 +1,4 @@
-import { connections, userWinners } from '../db/db';
+import { connections, userWinners } from '../../db/db';
 
 export const updateWinners = () => {
   const response = {

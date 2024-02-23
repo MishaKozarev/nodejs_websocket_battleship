@@ -1,5 +1,5 @@
-import { removeRoom, rooms, users } from '../db/db';
-import { ExtendWebSocket, IndexRoom, RequestByUser, Room, User } from '../model/types';
+import { removeRoom, rooms, users } from '../../db/db';
+import { ExtendWebSocket, IndexRoom, RequestByUser, Room, User } from '../../model/user.type';
 import { createGame } from './createGame';
 import { updateRoom } from './updateRoom';
 

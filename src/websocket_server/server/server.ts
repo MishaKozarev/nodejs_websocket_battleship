@@ -1,5 +1,5 @@
 import { WebSocket } from 'ws';
-import { ExtendWebSocket } from '../model/types';
+import { ExtendWebSocket } from '../model/user.type';
 import { randomUUID } from 'crypto';
 import { handleRequest } from './request';
 

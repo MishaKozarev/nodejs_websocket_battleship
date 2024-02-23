@@ -1,5 +1,5 @@
-import { connections, removeRoom, rooms } from '../db/db';
-import { ExtendWebSocket, IndexRoom, RequestByUser, Room, User } from '../model/types';
+import { connections, removeRoom, rooms } from '../../db/db';
+import { ExtendWebSocket, IndexRoom, RequestByUser, Room, User } from '../../model/user.type';
 
 export const createGame = (request: RequestByUser) => {
   const requestIndexRoom = JSON.parse(request.data) as IndexRoom;

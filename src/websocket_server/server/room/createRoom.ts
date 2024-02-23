@@ -1,5 +1,5 @@
-import { rooms, users } from '../db/db';
-import { ExtendWebSocket, Room, User } from '../model/types';
+import { rooms, users } from '../../db/db';
+import { ExtendWebSocket, Room, User } from '../../model/user.type';
 import { updateRoom } from './updateRoom';
 
 export function createRoom(ws: ExtendWebSocket) {

@@ -1,4 +1,4 @@
-import { connections, rooms } from '../db/db';
+import { connections, rooms } from '../../db/db';
 
 export const updateRoom = (): void => {
   const creatorRoom = rooms.filter((creator) => creator.roomUsers.length === 1);
