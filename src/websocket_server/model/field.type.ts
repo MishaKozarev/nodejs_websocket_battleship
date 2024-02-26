@@ -1,21 +1,22 @@
-export interface Game {
-  currentGameId: string;
-  ships: Field;
-  indexPlayer: string;
-  turn: boolean;
-}
+export type GameField = GameCell[][];
 
-export type Field = StatusAndTypeCells[][];
-
-
-export type StatusAndTypeCells =
+export type GameCell =
   | 'miss'
   | 'killed'
   | 'shot'
+  | 'empty'
   | 'small'
   | 'medium'
   | 'large'
-  | 'huge'
-  | 'empty';
+  | 'huge';
 
+export type NeighboringCell = {
+  status: GameCell;
+  x: number;
+  y: number;
+};
 
+export type CellCoordinates = {
+  x: number;
+  y: number;
+}

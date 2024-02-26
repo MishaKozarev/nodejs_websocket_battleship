@@ -1,12 +1,12 @@
 import { WebSocket } from 'ws';
 import { ExtendWebSocket } from '../model/user.type';
-import { randomUUID } from 'crypto';
 import { handleRequest } from './request';
+import { getRandomId } from '../utils/getRandomId';
 
 export const wss = new WebSocket.Server({port: 3000});
 
 wss.on('connection', (ws: ExtendWebSocket) => {
-  const id = randomUUID();
+  const id = getRandomId();
   ws.id = id;
   console.log(`Connected client ID: ${ws.id}!`);
 

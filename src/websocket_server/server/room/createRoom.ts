@@ -1,21 +1,11 @@
-import { rooms, users } from '../../db/db';
-import { ExtendWebSocket, Room, User } from '../../model/user.type';
-import { updateRoom } from './updateRoom';
+import { rooms } from '../../db/db';
+import { ExtendWebSocket } from '../../model/user.type';
+import { getRandomId } from '../../utils/getRandomId';
+import { getUserById } from '../user/getUserById';
 
 export function createRoom(ws: ExtendWebSocket) {
-  if (rooms.find((room) => room.roomId === ws.id)) return;
+  const roomId = getRandomId();
+  const user = getUserById(ws.id);
 
-  const creatorRoom = users.find((user) => user.index === ws.id) as User;
-
-  const newRoom: Room = {
-    roomId: creatorRoom.index,
-    roomUsers: [
-      {
-        name: creatorRoom.name,
-        index: creatorRoom.index,
-      },
-    ],
-  };
-  rooms.push(newRoom);
-  updateRoom();
+  rooms.push({ roomId, playerNames: [user.name] });
 }

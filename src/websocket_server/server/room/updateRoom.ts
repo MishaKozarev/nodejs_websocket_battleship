@@ -1,15 +1,33 @@
 import { connections, rooms } from '../../db/db';
+import { getUserByName } from '../user/getUserByName';
 
 export const updateRoom = (): void => {
-  const creatorRoom = rooms.filter((creator) => creator.roomUsers.length === 1);
-  const roomAfterUpdate = JSON.stringify(creatorRoom);
-  const response = {
+  const roomsWithOneUser = rooms.filter(
+    (room) => room.playerNames.length === 1
+  );
+
+  let data;
+  if (roomsWithOneUser.length) {
+    data = roomsWithOneUser.map((room) => {
+      const roomUsers = room.playerNames.map((name) => ({
+        name,
+        index: getUserByName(name).wsId,
+      }));
+      return {
+        roomId: room.roomId,
+        roomUsers,
+      };
+    });
+  } else {
+    data = {
+      roomId: -1,
+      roomUser: [],
+    };
+  }
+  const responseData = {
     type: 'update_room',
-    data: roomAfterUpdate,
+    data: JSON.stringify(data),
     id: 0,
   };
-  connections.forEach((ws) => {
-    ws.send(JSON.stringify(response));
-  });
-
+  connections.forEach((connection) => connection.send(JSON.stringify(responseData)));
 };

@@ -1,14 +1,14 @@
-import { Game } from '../model/field.type';
+import { Game } from '../model/game.type';
 import { ExtendWebSocket, Room, User, UserWinner } from '../model/user.type';
 
 export const users: User[] = [];
-export let rooms: Room[] = [];
+export const rooms: Room[] = [];
 export const userWinners: UserWinner[] = [];
 export const connections: ExtendWebSocket[] = [];
-export const currentGame: Game[] = [];
+export const currentGames: Game[] = [];
 
-export const removeRoom = (id: string) => {
-  rooms = rooms.filter(
-    (room) => room.roomId !== id,
-  );
+export const removeUserFromRoom = (id: number): void => {
+  const deletingPosition = rooms.findIndex((room) => room.roomId === id);
+  rooms.splice(deletingPosition, 1);
 };
+

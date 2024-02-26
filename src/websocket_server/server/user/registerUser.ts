@@ -1,14 +1,13 @@
 import { connections, users } from '../../db/db';
-import { ExtendWebSocket, RequestByUser, User } from '../../model/user.type';
+import { ExtendWebSocket, User, UserData } from '../../model/user.type';
 import { checkedUserExistence } from '../../utils/isUserExist';
 
-export function registerUser(ws: ExtendWebSocket, request: RequestByUser) {
-  const { name, password } = JSON.parse(request.data);
+export function registerUser(ws: ExtendWebSocket, { name, password }: UserData): void {
 
-  if (!checkedUserExistence(request)) {
+  if (!checkedUserExistence(name)) {
     const newUser: User = {
       name,
-      index: ws.id,
+      wsId: ws.id,
       password,
       wins: 0,
     };

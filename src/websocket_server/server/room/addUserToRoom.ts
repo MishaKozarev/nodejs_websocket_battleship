@@ -1,27 +1,23 @@
-import { removeRoom, rooms, users } from '../../db/db';
-import { ExtendWebSocket, IndexRoom, RequestByUser, Room, User } from '../../model/user.type';
-import { createGame } from './createGame';
-import { updateRoom } from './updateRoom';
+import { rooms, users } from '../../db/db';
+import { ExtendWebSocket, IndexRoom } from '../../model/user.type';
+import { getUserById } from '../user/getUserById';
 
-export const addUsersToRoom = (ws: ExtendWebSocket, request: RequestByUser) => {
-  const roomIndex = JSON.parse(request.data) as IndexRoom;
-  const isUserTheCreateRoom = roomIndex.indexRoom === ws.id;
+export const addUsersToRoom = (ws: ExtendWebSocket, { indexRoom }: IndexRoom) => {
 
-  if (isUserTheCreateRoom) return;
+  const room = rooms.find((room) => room.roomId === indexRoom);
 
-  const userToRoom = users.find(
-    (user) => user.index === ws.id,
-  ) as User;
-
-  const roomToAddUser = rooms.find(
-    (room) => room.roomId === roomIndex.indexRoom,
-  ) as Room;
-
-  if (rooms.find((room) => room.roomId === userToRoom.index)) {
-    removeRoom(userToRoom.index);
-
+  if (!room || room.playerNames.length > 1) {
+    return;
   }
-  roomToAddUser.roomUsers.push(userToRoom);
-  updateRoom();
-  createGame(request);
+
+  const user = users.find((player) =>
+    room.playerNames.includes(player.name)
+  );
+
+  if (user?.wsId === ws.id) {
+    return;
+  }
+
+  const newUser = getUserById(ws.id);
+  room.playerNames.push(newUser.name);
 };

@@ -1,10 +1,10 @@
-import { Field } from '../../model/field.type';
+import { FIELD_SIZE } from '../../constants/field';
+import { GameField } from '../../model/field.type';
 import { Ship } from '../../model/ships.type';
 
-export function createField(ships: Ship[]): Field {
-  const fieldSize = 10;
-  const field: Field = Array.from({ length: fieldSize }, () =>
-    Array(fieldSize).fill('empty'),
+export function createField(ships: Ship[]): GameField {
+  const field: GameField = Array.from({ length: FIELD_SIZE }, () =>
+    Array(FIELD_SIZE).fill('empty'),
   );
 
   for (const ship of ships) {

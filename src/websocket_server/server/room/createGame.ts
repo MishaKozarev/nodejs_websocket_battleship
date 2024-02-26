@@ -1,52 +1,50 @@
-import { connections, removeRoom, rooms } from '../../db/db';
-import { ExtendWebSocket, IndexRoom, RequestByUser, Room, User } from '../../model/user.type';
+import { connections, currentGames, removeUserFromRoom, rooms } from '../../db/db';
+import { IndexRoom } from '../../model/user.type';
+import { getUserByName } from '../user/getUserByName';
 
-export const createGame = (request: RequestByUser) => {
-  const requestIndexRoom = JSON.parse(request.data) as IndexRoom;
-  const currentRoom = rooms.find(
-    (room) => room.roomId === requestIndexRoom.indexRoom,
-  ) as Room;
+export const createGame = ({ indexRoom }: IndexRoom) => {
+  const room = rooms.find((room) => room.roomId === indexRoom);
 
-  const userFirst = currentRoom.roomUsers.find(
-    (user) => user.index === requestIndexRoom.indexRoom,
-  ) as User;
+  if (!room || room.playerNames.length !== 2) {
+    return;
+  }
 
-  const userSecond = currentRoom.roomUsers.filter(
-    (user) => user.index !== userFirst.index,
-  )[0];
+  const idGame = room.roomId;
 
-  const dataFirst = JSON.stringify({
-    idGame: userFirst.index,
-    idPlayer: userFirst.index,
+  const userWsIds = room.playerNames.map((name) => {
+    const user = getUserByName(name);
+    return user.wsId;
   });
 
-  const dataSecond = JSON.stringify({
-    idGame: userFirst.index,
-    idPlayer: userSecond.index,
+ connections.forEach((connection) => {
+    if (userWsIds.includes(connection.id)) {
+      const data = {
+        idGame,
+        idPlayer: connection.id,
+      };
+
+      const responseData = {
+        type: 'create_game',
+        data: JSON.stringify(data),
+        id: 0,
+      };
+
+      connection.send(JSON.stringify(responseData));
+    }
   });
 
-  const responseFirst = {
-    type: 'create_game',
-    data: dataFirst,
-    id: 0,
+  const game = {
+    id: idGame,
+    playerFirst: {
+      wsId: userWsIds[0],
+      turn: false,
+    },
+    playerSecond: {
+      wsId: userWsIds[1],
+      turn: false,
+    },
   };
 
-  const responseSecond = {
-    type: 'create_game',
-    data: dataSecond,
-    id: 0,
-  };
-
-  const connectionFirst = connections.find(
-    (item) => item.id === userFirst.index,
-  ) as ExtendWebSocket;
-
-  const connectionSecond = connections.find(
-    (item) => item.id === userSecond.index,
-  ) as ExtendWebSocket;
-
-  connectionFirst.send(JSON.stringify(responseFirst));
-  connectionSecond.send(JSON.stringify(responseSecond));
-
-  removeRoom(currentRoom.roomId);
+  currentGames.push(game);
+  removeUserFromRoom(room.roomId);
 };
