@@ -8,7 +8,8 @@ import { updateWinners } from './user/updateWinner';
 import { AddShips } from '../model/ships.type';
 import { createGame } from './room/createGame';
 import { attack } from './game/attack';
-import { Attack } from '../model/game.type';
+import { Attack, RandomAttack } from '../model/game.type';
+import { randomAttack } from './game/randomAttack';
 
 export function handleRequest(ws: ExtendWebSocket, request: RequestByUser) {
   try {
@@ -32,6 +33,9 @@ export function handleRequest(ws: ExtendWebSocket, request: RequestByUser) {
         break;
       case 'attack':
         attack(JSON.parse(request.data as string) as Attack);
+      case 'randomAttack':
+        randomAttack(JSON.parse(request.data as string) as RandomAttack);
+        break;
       }
   } catch(error) {
     console.log(`Error occurred: ${error}`);
